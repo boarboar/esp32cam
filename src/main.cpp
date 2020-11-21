@@ -255,6 +255,7 @@ static esp_err_t stream_handler(httpd_req_t *req){
         }
       }
     }
+    digitalWrite(LED_PIN, LOW);
     if(res == ESP_OK){
       size_t hlen = snprintf((char *)part_buf, 64, _STREAM_PART, _jpg_buf_len);
       res = httpd_resp_send_chunk(req, (const char *)part_buf, hlen);
@@ -265,6 +266,7 @@ static esp_err_t stream_handler(httpd_req_t *req){
     if(res == ESP_OK){
       res = httpd_resp_send_chunk(req, _STREAM_BOUNDARY, strlen(_STREAM_BOUNDARY));
     }
+    digitalWrite(LED_PIN, HIGH);
     if(fb){
       esp_camera_fb_return(fb);
       fb = NULL;
@@ -397,10 +399,12 @@ void setup() {
   WRITE_PERI_REG(RTC_CNTL_BROWN_OUT_REG, 0); //disable brownout detector
 
   pinMode(LED_PIN, OUTPUT);
+  digitalWrite(LED_PIN, HIGH);
+
   pinMode(FLASH_PIN, OUTPUT);
 
   digitalWrite(FLASH_PIN, HIGH);
-  delay(10);
+  delay(5);
   digitalWrite(FLASH_PIN, LOW);
 
   Serial.begin(115200);
@@ -426,9 +430,10 @@ void setup() {
 }
  
 void loop() {
-  digitalWrite(LED_PIN, LOW);
-  delay(200);
-  digitalWrite(LED_PIN, HIGH);
-  delay(1000);
+  // digitalWrite(LED_PIN, LOW);
+  // delay(200);
+  // digitalWrite(LED_PIN, HIGH);
+  // delay(1000);
+
   //delay(200);
 }
